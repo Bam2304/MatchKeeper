@@ -8,8 +8,67 @@
 import SwiftUI
 
 struct BaseView: View {
+    @State private var selected: MenuItem = .home
+    @State private var showMenu: Bool = false
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack(alignment: .leading){
+            NavigationStack{
+                ViewThatFits
+                    .toolbar{
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button{
+                                withAnimation{
+                                    showMenu.toggle()
+                                }
+                            } label: {
+                                Image(systemName: "line.3.horizontal")
+                            }
+                        }
+                        
+                        
+                        if selected == .home {
+                            ToolbarItem(placement: .topBarTrailing){
+                                Button{
+                                    //logout logic
+                                } label: {
+                                    Image(systemName: "rectangle.portrait.and.arrow.right")
+                                }
+                            }
+                        }
+                        
+                    }
+            }
+            
+            if showMenu{
+                Color.black.opacity(0.15)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation {
+                            showMenu = false
+                        }
+                    }
+                    .zIndex(1)
+            }
+            
+            SideMenuView(selectedMenuItem: $selected, showMenu: $showMenu)
+                .offset(x: showMenu ? 0 : -200)
+                .zIndex(2)
+        }
+        .animation(.easeInOut(duration: 0.25), value: showMenu)
+    }
+    
+    
+    @ViewBuilder
+    var ViewThatFits: some View {
+        switch selected {
+        case .home:
+            HomeView()
+        case .profile:
+            Text("placeholder")
+        case .search:
+            Text("placeholder")
+        }
     }
 }
 

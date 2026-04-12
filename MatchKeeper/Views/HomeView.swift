@@ -12,9 +12,15 @@ import SwiftUI
 struct HomeView: View {
     var body: some View {
         VStack {
-            Text("Hello, world!")
+            Text("WELCOME!")
+                .font(.system(size: 55))
+                .fontDesign(.serif)
+                .foregroundStyle(.green)
+                .bold()
+            
+            Spacer()
         }
-        .padding()
+        
     }
 }
 

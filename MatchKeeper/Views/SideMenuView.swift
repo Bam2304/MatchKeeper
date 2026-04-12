@@ -7,12 +7,61 @@
 
 import SwiftUI
 
-struct SideMenuView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+enum MenuItem: String, Identifiable, CaseIterable {
+    case home
+    case profile
+    case search
+    var id: String { self.rawValue }
+    var title: String {
+        rawValue.capitalized
+    }
+    var icon: String{
+        switch self{
+        case .home:
+            return "house"
+        case .profile:
+            return "person"
+        case .search:
+            return "magnifyingglass"
+        }
     }
 }
 
+struct SideMenuView: View {
+    @Binding var selectedMenuItem: MenuItem
+    @Binding var showMenu: Bool
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 25){
+            Text("Menu")
+                .font(.largeTitle.bold())
+                .padding(.top, 60)
+            
+            ForEach(MenuItem.allCases){ item in
+                Button{
+                    withAnimation{
+                        selectedMenuItem = item
+                        showMenu = false
+                    }
+                } label: {
+                    Label(item.title, systemImage: item.icon)
+                        .font(.title2)
+                        .foregroundStyle(.primary)
+                }
+            }
+            
+            Spacer()
+        }
+        .padding()
+        .frame(width: 200)
+        .background(.ultraThinMaterial)
+        .ignoresSafeArea()
+    }
+}
+
+
+
+
 #Preview {
-    SideMenuView()
+    //SideMenuView()
 }
