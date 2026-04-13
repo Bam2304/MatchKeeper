@@ -67,7 +67,7 @@ struct BaseView: View {
         case .profile:
             Text("placeholder")
         case .search:
-            Text("placeholder")
+            SearchView()
         }
     }
 }
