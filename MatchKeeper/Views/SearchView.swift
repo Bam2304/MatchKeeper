@@ -10,6 +10,7 @@ import SwiftUI
 struct SearchView: View {
     @State private var match: String = ""
     @State private var date: String = ""
+    @StateObject private var fetcher = matchFetcher()
     
     
     var body: some View {
@@ -32,7 +33,7 @@ struct SearchView: View {
                                 .stroke(Color.green)
                         )
                     
-                    TextField("Date (m/d/y)", text: $date)
+                    TextField("Date (yyyy-m-d)", text: $date)
                         .padding(5)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
@@ -41,6 +42,9 @@ struct SearchView: View {
                     
                     Button(action: {
                         //logic for search
+                        Task {
+                            try await fetcher.getMatch(matchup: match, date: date)
+                        }
                     }, label: {
                         HStack {
                             Image(systemName: "magnifyingglass")
@@ -54,7 +58,35 @@ struct SearchView: View {
                 }
                 .padding(15)
                 
-                
+                //if the match has loaded, display it, else show placeholders
+                if let match = fetcher.returnedMatch {
+                    HStack(spacing: 15) {
+                        AsyncImage(url: URL(string: match.strThumb ?? "")) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(width: 120, height: 80)
+                        .clipped()
+                        .cornerRadius(8)
+                        
+                        Text(match.strEvent ?? "")
+                            .font(.headline)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, minHeight: 150)
+                    .background(Color(.systemGray6))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.green, lineWidth: 2)
+                    )
+                    .cornerRadius(12)
+                } else {
+                    Text("No Match Found Currently...")
+                        .foregroundColor(.gray)
+                }
                 
                 //navigation link appears once search return
                 

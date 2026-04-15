@@ -23,5 +23,5 @@ struct Match: Decodable, Identifiable{
 }
 
 struct MatchResponse: Decodable {
-    let match: [Match]
+    let event: [Match]?
 }
