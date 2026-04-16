@@ -20,6 +20,8 @@ struct Match: Decodable, Identifiable{
     var id: Int {
         return Int(idEvent)!
     }
+    // this is the journal text from the user
+    var journal: String?
 }
 
 struct MatchResponse: Decodable {

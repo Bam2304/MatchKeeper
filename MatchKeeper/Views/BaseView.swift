@@ -10,6 +10,7 @@ import SwiftUI
 struct BaseView: View {
     @State private var selected: MenuItem = .home
     @State private var showMenu: Bool = false
+    @EnvironmentObject var dM: DataManager
     
     var body: some View {
         ZStack(alignment: .leading){
@@ -64,14 +65,17 @@ struct BaseView: View {
         switch selected {
         case .home:
             HomeView()
+                .environmentObject(dM)
         case .profile:
             Text("placeholder")
         case .search:
             SearchView()
+                .environmentObject(dM)
         }
     }
 }
 
 #Preview {
     BaseView()
+        .environmentObject(DataManager())
 }

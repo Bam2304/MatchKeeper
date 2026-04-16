@@ -13,6 +13,7 @@ import YouTubePlayerKit
 struct MatchDetailView: View {
     var thisMatch: Match
     @State var journalText: String = ""
+    @EnvironmentObject var dM: DataManager
     
     var body: some View {
         ScrollView{
@@ -79,7 +80,9 @@ struct MatchDetailView: View {
                 
                 
                 Button("Save"){
-                    //saving logic to come
+                    //saving logic
+                    dM.addMatch(thisMatch)
+                    dM.updateJournal(for: thisMatch.idEvent, text: journalText)
                 }
                 .frame(width: 100, height: 40)
                 .background(Color.green)
@@ -90,10 +93,15 @@ struct MatchDetailView: View {
                 Spacer()
             }
         }
+        .onAppear {
+            journalText = thisMatch.journal ?? ""
+        }
         
     }
+    
 }
 
 #Preview {
     MatchDetailView(thisMatch: dummyMatch)
+        .environmentObject(DataManager())
 }

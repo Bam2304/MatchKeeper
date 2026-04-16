@@ -11,7 +11,7 @@ struct SearchView: View {
     @State private var match: String = ""
     @State private var date: String = ""
     @StateObject private var fetcher = matchFetcher()
-    
+    @EnvironmentObject var dM: DataManager
     
     var body: some View {
         NavigationStack {
@@ -58,11 +58,12 @@ struct SearchView: View {
                 }
                 .padding(15)
                 
-                //if the match has loaded, display it, else show placeholders
+                //if the match has loaded, display it
                 //navigation link appears once search return
                 if let match = fetcher.returnedMatch {
                     NavigationLink {
                         MatchDetailView(thisMatch: match)
+                            .environmentObject(dM)
                     } label: {
                         HStack(spacing: 15) {
                             AsyncImage(url: URL(string: match.strThumb ?? "")) { image in
@@ -105,4 +106,5 @@ struct SearchView: View {
 
 #Preview {
     SearchView()
+        .environmentObject(DataManager())
 }
