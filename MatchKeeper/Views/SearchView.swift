@@ -59,36 +59,42 @@ struct SearchView: View {
                 .padding(15)
                 
                 //if the match has loaded, display it, else show placeholders
+                //navigation link appears once search return
                 if let match = fetcher.returnedMatch {
-                    HStack(spacing: 15) {
-                        AsyncImage(url: URL(string: match.strThumb ?? "")) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        } placeholder: {
-                            ProgressView()
+                    NavigationLink {
+                        MatchDetailView(thisMatch: match)
+                    } label: {
+                        HStack(spacing: 15) {
+                            AsyncImage(url: URL(string: match.strThumb ?? "")) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .frame(width: 120, height: 80)
+                            .clipped()
+                            .cornerRadius(8)
+                            
+                            Text(match.strEvent ?? "")
+                                .font(.headline)
                         }
-                        .frame(width: 120, height: 80)
-                        .clipped()
-                        .cornerRadius(8)
-                        
-                        Text(match.strEvent ?? "")
-                            .font(.headline)
+                        .padding(10)
+                        .frame(maxWidth: .infinity, minHeight: 150)
+                        .background(Color(.systemGray6))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.green, lineWidth: 2)
+                        )
+                        .cornerRadius(12)
                     }
-                    .padding()
-                    .frame(maxWidth: .infinity, minHeight: 150)
-                    .background(Color(.systemGray6))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.green, lineWidth: 2)
-                    )
-                    .cornerRadius(12)
+                    
                 } else {
                     Text("No Match Found Currently...")
                         .foregroundColor(.gray)
                 }
                 
-                //navigation link appears once search return
+                
                 
                 Spacer()
             }

@@ -25,3 +25,5 @@ struct Match: Decodable, Identifiable{
 struct MatchResponse: Decodable {
     let event: [Match]?
 }
+
+let dummyMatch: Match = Match(idEvent: "", strEvent: "Arsenal vs Chelsea", strLeague: "English Premier League", intHomeScore: "0", intAwayScore: "1", dateEvent: "2025-01-23", strVenue: "Emirates Stadium", strThumb: "https://r2.thesportsdb.com/images/media/event/thumb/sswrrr1430243855.jpg", strVideo: "https://www.youtube.com/watch?v=yQaaKW9CzNM")
