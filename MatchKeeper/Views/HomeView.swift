@@ -21,7 +21,15 @@ struct HomeView: View {
                 .foregroundStyle(.green)
                 .bold()
             
-            //if there are any saved matches, display them in list view
+            // if there are any saved matches, display them in list view,
+            // else show placeholder message
+            if dM.matchList.isEmpty {
+                Text("No matches saved yet. Serach for one and save now!")
+                    .multilineTextAlignment(.center)
+                    .padding(20)
+                    .font(.title3)
+            }
+            
             List {
                 ForEach(dM.matchList) { match in
                     NavigationLink {
