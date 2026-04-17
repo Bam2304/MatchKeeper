@@ -8,12 +8,30 @@
 import SwiftUI
 import WebKit
 import YouTubePlayerKit
+import MapKit
 
+//function to get coordinates from match venue
+func getCoordinates(from query: String) async -> CLLocationCoordinate2D? {
+    let request = MKLocalSearch.Request()
+    request.naturalLanguageQuery = query
+    
+    let search = MKLocalSearch(request: request)
+    
+    do {
+        let response = try await search.start()
+        return response.mapItems.first?.location.coordinate
+    } catch {
+        print("Search error:", error)
+        return nil
+    }
+}
 
 struct MatchDetailView: View {
     var thisMatch: Match
     @State var journalText: String = ""
     @EnvironmentObject var dM: DataManager
+    @State private var coordinate: CLLocationCoordinate2D?
+    @State private var position: MapCameraPosition = .automatic
     
     var body: some View {
         ScrollView{
@@ -64,8 +82,28 @@ struct MatchDetailView: View {
                         )
                         .padding(10)
                     
+                    //map for stadium location
+                    Map(position: $position) {
+                        if let coordinate {
+                            Marker(thisMatch.strVenue ?? "", systemImage: "sportscourt", coordinate: coordinate)
+                        }
+                    }
+                    .aspectRatio(16/9, contentMode: .fit)
+                    .frame(maxWidth: .infinity)
+                    .padding(10)
+                    .task {
+                        if let coord = await getCoordinates(from: thisMatch.location) {
+                            coordinate = coord
+                            position = .region(
+                                MKCoordinateRegion(
+                                    center: coord,
+                                    span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
+                                )
+                            )
+                        }
+                    }
                     
-                    //video player
+                    //video player found from github api YouTubePlayerKit
                     YouTubePlayerView(
                         YouTubePlayer(urlString: thisMatch.strVideo ?? "")
                     )
@@ -73,9 +111,7 @@ struct MatchDetailView: View {
                     .frame(maxWidth: .infinity)
                     .padding(10)
                     
-                    //map for stadium location maybe
-                    
-                    
+                   
                 }
                 
                 
