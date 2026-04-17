@@ -81,14 +81,11 @@ The app follows a simple MVVM-style structure:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
+   git clone https://github.com/Bam2304/MatchKeeper.git
    ```
 
-2. Open the project in Xcode:
+2. Open the project in Xcode
 
-   ```bash
-   open YourProject.xcodeproj
-   ```
 
 3. Run the app on a simulator or device.
 
