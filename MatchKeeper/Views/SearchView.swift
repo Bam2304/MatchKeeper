@@ -33,7 +33,7 @@ struct SearchView: View {
                                 .stroke(Color.green)
                         )
                     
-                    TextField("Date (yyyy-m-d)", text: $date)
+                    TextField("Date (yyyy-mm-dd)", text: $date)
                         .padding(5)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)

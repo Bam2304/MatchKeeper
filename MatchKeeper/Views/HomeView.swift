@@ -24,7 +24,7 @@ struct HomeView: View {
             // if there are any saved matches, display them in list view,
             // else show placeholder message
             if dM.matchList.isEmpty {
-                Text("No matches saved yet. Serach for one and save now!")
+                Text("You have no matches saved yet. Try seraching for one and saving it now!")
                     .multilineTextAlignment(.center)
                     .padding(20)
                     .font(.title3)
