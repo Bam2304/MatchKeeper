@@ -17,6 +17,16 @@ struct LoginView: View {
         GeometryReader { geometry in
             ZStack(alignment: .top) {
                 VStack(spacing: 14) {
+                    // app logo
+                    Image("logo").resizable()
+                        .scaledToFit()
+                        .scaleEffect(1.5)
+                        .clipShape(Circle())
+                        .shadow(radius: 3)
+                        .frame(width: 280, height: 280)
+                        .padding(15)
+                    
+                    
                     TextField("Email", text: $email)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
@@ -68,14 +78,8 @@ struct LoginView: View {
                     }
                 }
                 .padding(.horizontal, 24)
+                .padding(.bottom, 108)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-
-                Text("MATCHKEEPER")
-                    .font(.system(size: 45))
-                    .fontDesign(.serif)
-                    .foregroundStyle(.green)
-                    .bold()
-                    .padding(.top, geometry.size.height * 0.23)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
