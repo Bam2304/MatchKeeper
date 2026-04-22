@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		733389C32F9727A500BA34B1 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 733389C22F9727A500BA34B1 /* FirebaseAuth */; };
+		733389C52F9727A500BA34B1 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 733389C42F9727A500BA34B1 /* FirebaseDatabase */; };
+		733389C72F9727A500BA34B1 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 733389C62F9727A500BA34B1 /* FirebaseFirestore */; };
+		733389C92F9727A500BA34B1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 733389C82F9727A500BA34B1 /* FirebaseStorage */; };
 		F556FCBF2F9078B000DF82EF /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = F556FCBE2F9078B000DF82EF /* YouTubePlayerKit */; };
 /* End PBXBuildFile section */
 
@@ -27,7 +31,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				733389C52F9727A500BA34B1 /* FirebaseDatabase in Frameworks */,
+				733389C72F9727A500BA34B1 /* FirebaseFirestore in Frameworks */,
 				F556FCBF2F9078B000DF82EF /* YouTubePlayerKit in Frameworks */,
+				733389C92F9727A500BA34B1 /* FirebaseStorage in Frameworks */,
+				733389C32F9727A500BA34B1 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +79,10 @@
 			name = MatchKeeper;
 			packageProductDependencies = (
 				F556FCBE2F9078B000DF82EF /* YouTubePlayerKit */,
+				733389C22F9727A500BA34B1 /* FirebaseAuth */,
+				733389C42F9727A500BA34B1 /* FirebaseDatabase */,
+				733389C62F9727A500BA34B1 /* FirebaseFirestore */,
+				733389C82F9727A500BA34B1 /* FirebaseStorage */,
 			);
 			productName = MatchKeeper;
 			productReference = F531DC972F8AA27F008F2452 /* MatchKeeper.app */;
@@ -102,6 +114,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				F556FCBD2F9078B000DF82EF /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */,
+				733389C12F9727A500BA34B1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F531DC982F8AA27F008F2452 /* Products */;
@@ -339,6 +352,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		733389C12F9727A500BA34B1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.12.1;
+			};
+		};
 		F556FCBD2F9078B000DF82EF /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SvenTiigi/YouTubePlayerKit.git";
@@ -350,6 +371,26 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		733389C22F9727A500BA34B1 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 733389C12F9727A500BA34B1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		733389C42F9727A500BA34B1 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 733389C12F9727A500BA34B1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		733389C62F9727A500BA34B1 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 733389C12F9727A500BA34B1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		733389C82F9727A500BA34B1 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 733389C12F9727A500BA34B1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		F556FCBE2F9078B000DF82EF /* YouTubePlayerKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F556FCBD2F9078B000DF82EF /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */;
