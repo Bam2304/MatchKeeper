@@ -60,7 +60,7 @@ struct HomeView: View {
                         )
                         .cornerRadius(12)
                     }                }
-                //.onDelete(perform: dM.deleteItem)
+                .onDelete(perform: dM.removeMatch) // swipe to delete match
             }
             
             Spacer()

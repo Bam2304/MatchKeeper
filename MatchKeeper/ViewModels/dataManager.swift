@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 class DataManager: ObservableObject {
     //when user saves a match, appears here
@@ -24,6 +25,10 @@ class DataManager: ObservableObject {
         if let index = matchList.firstIndex(where: { $0.idEvent == matchID }) {
             matchList[index].journal = text
         }
+    }
+    
+    func removeMatch(at offsets: IndexSet){
+        matchList.remove(atOffsets: offsets)
     }
     
     
