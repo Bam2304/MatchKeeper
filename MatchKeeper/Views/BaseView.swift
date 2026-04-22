@@ -11,6 +11,7 @@ struct BaseView: View {
     @State private var selected: MenuItem = .home
     @State private var showMenu: Bool = false
     @EnvironmentObject var dM: DataManager
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
         ZStack(alignment: .leading){
@@ -27,17 +28,13 @@ struct BaseView: View {
                             }
                         }
                         
-                        
-                        if selected == .home {
-                            ToolbarItem(placement: .topBarTrailing){
-                                Button{
-                                    //logout logic
-                                } label: {
-                                    Image(systemName: "rectangle.portrait.and.arrow.right")
-                                }
+                        ToolbarItem(placement: .topBarTrailing){
+                            Button{
+                                authViewModel.signOut()
+                            } label: {
+                                Image(systemName: "rectangle.portrait.and.arrow.right")
                             }
                         }
-                        
                     }
             }
             
@@ -67,7 +64,8 @@ struct BaseView: View {
             HomeView()
                 .environmentObject(dM)
         case .profile:
-            Text("placeholder")
+            ProfileView()
+                .environmentObject(authViewModel)
         case .search:
             SearchView()
                 .environmentObject(dM)
@@ -78,4 +76,5 @@ struct BaseView: View {
 #Preview {
     BaseView()
         .environmentObject(DataManager())
+    .environmentObject(AuthViewModel())
 }
