@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-
-
 struct HomeView: View {
     @EnvironmentObject var dM: DataManager
-    
+    @StateObject private var fetcher = matchFetcher()
+    @State private var isLoading = false
+    @State private var refreshTask: Task<Void, Never>?
     
     var body: some View {
         VStack {
@@ -21,51 +21,88 @@ struct HomeView: View {
                 .foregroundStyle(.green)
                 .bold()
             
-            // if there are any saved matches, display them in list view,
-            // else show placeholder message
-            if dM.matchList.isEmpty {
-                Text("You have no matches saved yet. Try seraching for one and saving it now!")
+            if isLoading {
+                ProgressView()
+            } else if fetcher.recentMatches.isEmpty {
+                Text("No recent games available.")
                     .multilineTextAlignment(.center)
                     .padding(20)
                     .font(.title3)
-            }
-            
-            List {
-                ForEach(dM.matchList) { match in
-                    NavigationLink {
-                        MatchDetailView(thisMatch: match)
-                            .environmentObject(dM)
-                    } label: {
-                        HStack(spacing: 15) {
-                            AsyncImage(url: URL(string: match.strThumb ?? "")) { image in
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                            } placeholder: {
-                                ProgressView()
+            } else {
+                List {
+                    ForEach(fetcher.recentMatches) { match in
+                        NavigationLink {
+                            MatchDetailView(thisMatch: match)
+                                .environmentObject(dM)
+                        } label: {
+                            HStack(spacing: 15) {
+                                AsyncImage(url: URL(string: match.strThumb ?? "")) { image in
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .frame(width: 120, height: 80)
+                                .clipped()
+                                .cornerRadius(8)
+                                
+                                VStack(alignment: .leading, spacing: 5) {
+                                    Text(match.strEvent ?? "")
+                                        .font(.headline)
+                                    if let date = match.dateEvent {
+                                        Text(date)
+                                            .font(.caption)
+                                            .foregroundStyle(.gray)
+                                    }
+                                }
                             }
-                            .frame(width: 120, height: 80)
-                            .clipped()
-                            .cornerRadius(8)
-                            
-                            Text(match.strEvent ?? "")
-                                .font(.headline)
+                            .padding(10)
+                            .frame(maxWidth: .infinity, minHeight: 150)
+                            .background(Color(.systemGray6))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.blue, lineWidth: 2)
+                            )
+                            .cornerRadius(12)
                         }
-                        .padding(10)
-                        .frame(maxWidth: .infinity, minHeight: 150)
-                        .background(Color(.systemGray6))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.green, lineWidth: 2)
-                        )
-                        .cornerRadius(12)
-                    }                }
-                .onDelete(perform: dM.removeMatch) // swipe to delete match
+                    }
+                }
             }
             
             Spacer()
         }
-        
+        .task {
+            await loadRecentGames()
+            startAutoRefresh()
+        }
+        .onDisappear {
+            refreshTask?.cancel()
+            refreshTask = nil
+        }
+    }
+    
+    private func loadRecentGames() async {
+        isLoading = true
+
+        do {
+            try await fetcher.getRecentGames()
+        } catch {
+            print("Error loading recent games: \(error)")
+        }
+
+        isLoading = false
+    }
+
+    private func startAutoRefresh() {
+        refreshTask?.cancel()
+        refreshTask = Task {
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(120))
+                if Task.isCancelled { break }
+                await loadRecentGames()
+            }
+        }
     }
 }
 

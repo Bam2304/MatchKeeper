@@ -11,9 +11,19 @@ enum MenuItem: String, Identifiable, CaseIterable {
     case home
     case profile
     case search
+    case savedGames
     var id: String { self.rawValue }
     var title: String {
-        rawValue.capitalized
+        switch self {
+        case .home:
+            return "Home"
+        case .profile:
+            return "Profile"
+        case .search:
+            return "Search"
+        case .savedGames:
+            return "Saved Games"
+        }
     }
     var icon: String{
         switch self{
@@ -23,6 +33,8 @@ enum MenuItem: String, Identifiable, CaseIterable {
             return "person"
         case .search:
             return "magnifyingglass"
+        case .savedGames:
+            return "bookmark"
         }
     }
 }
