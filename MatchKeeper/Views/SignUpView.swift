@@ -72,6 +72,7 @@ struct SignUpView: View {
                         }
                         localErrorMessage = nil
                         authViewModel.signUp(name: name, email: email, password: password)
+                        onTapLogIn()
                     } label: {
                         HStack {
                             if authViewModel.isLoading {

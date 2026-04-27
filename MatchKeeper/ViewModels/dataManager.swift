@@ -108,8 +108,9 @@ class DataManager: ObservableObject {
                     )
                 }
 
+                guard let self else { return }
                 Task { @MainActor in
-                    self?.matchList = loadedMatches
+                    self.matchList = loadedMatches
                 }
             }
     }
