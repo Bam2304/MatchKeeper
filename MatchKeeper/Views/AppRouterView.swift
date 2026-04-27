@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct AppRouterView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var dM: DataManager
     @State private var showSignUp = false
     
     var body: some View {
@@ -31,6 +33,13 @@ struct AppRouterView: View {
         }
         .task {
             authViewModel.startListening()
+        }
+        .task(id: authViewModel.user?.uid) {
+            if authViewModel.isSignedIn {
+                dM.loadSavedGames()
+            } else {
+                dM.matchList = []
+            }
         }
     }
 }
