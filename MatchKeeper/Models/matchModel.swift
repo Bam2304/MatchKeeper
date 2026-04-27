@@ -22,7 +22,8 @@ struct Match: Decodable, Identifiable{
         return Int(idEvent)!
     }
     // this is the journal text from the user
-    var journal: String?
+    var journal: String? = nil
+    var rating: Int? = nil
     // contructing location string to eventually get coordinates
     var location: String {
         if let ven = strVenue, let con = strCountry {

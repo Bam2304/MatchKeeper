@@ -11,6 +11,11 @@ struct LoginView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var email = ""
     @State private var password = ""
+    @State private var showForgotPassword = false
+    @State private var resetEmail = ""
+    @State private var showResetAlert = false
+    @State private var resetAlertTitle = ""
+    @State private var resetAlertMessage = ""
     let onTapSignUp: () -> Void
     
     var body: some View {
@@ -76,6 +81,13 @@ struct LoginView: View {
                             .foregroundStyle(.green)
                             .fontWeight(.medium)
                     }
+                    
+                    Button(action: { showForgotPassword = true }) {
+                        Text("Forgot Password?")
+                            .foregroundStyle(.green)
+                            .fontWeight(.medium)
+                            .font(.footnote)
+                    }
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 108)
@@ -84,6 +96,30 @@ struct LoginView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.white.ignoresSafeArea())
+        .alert("Forgot Password", isPresented: $showForgotPassword) {
+            TextField("Enter your email", text: $resetEmail)
+            Button("Cancel", role: .cancel) {
+                resetEmail = ""
+            }
+            Button("Send Reset Email") {
+                authViewModel.resetPassword(email: resetEmail) { success in
+                    if success {
+                        resetAlertTitle = "Check Your Email"
+                        resetAlertMessage = "If an account is found with this email, a password reset link has been sent. If no account exists, please sign up for an account."
+                    } else {
+                        resetAlertTitle = "Error"
+                        resetAlertMessage = authViewModel.errorMessage ?? "Failed to send reset email. Please try again."
+                    }
+                    showResetAlert = true
+                    resetEmail = ""
+                }
+            }
+        }
+        .alert(resetAlertTitle, isPresented: $showResetAlert) {
+            Button("OK") { }
+        } message: {
+            Text(resetAlertMessage)
+        }
     }
 }
 

@@ -29,9 +29,32 @@ func getCoordinates(from query: String) async -> CLLocationCoordinate2D? {
 struct MatchDetailView: View {
     var thisMatch: Match
     @State var journalText: String = ""
+    @State private var selectedRating: Int = 0
     @EnvironmentObject var dM: DataManager
     @State private var coordinate: CLLocationCoordinate2D?
     @State private var position: MapCameraPosition = .automatic
+
+    private var ratingLabel: String {
+        selectedRating == 0 ? "No rating selected" : "\(selectedRating) of 5 stars"
+    }
+
+    private var ratingStars: some View {
+        HStack(spacing: 10) {
+            ForEach(1...5, id: \.self) { star in
+                Button {
+                    selectedRating = star
+                } label: {
+                    Image(systemName: star <= selectedRating ? "star.fill" : "star")
+                        .font(.system(size: 30, weight: .semibold))
+                        .foregroundStyle(star <= selectedRating ? Color.yellow : Color.gray)
+                        .shadow(color: star <= selectedRating ? Color.yellow.opacity(0.3) : .clear, radius: 2, x: 0, y: 1)
+                        .frame(width: 34, height: 34)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Set rating to \(star) star\(star == 1 ? "" : "s")")
+            }
+        }
+    }
     
     var body: some View {
         ScrollView{
@@ -64,6 +87,19 @@ struct MatchDetailView: View {
                     .font(.system(size: 18))
                     .fontDesign(.serif)
                     .foregroundStyle(.green)
+
+                VStack(spacing: 10) {
+                    Text("Rate This Game")
+                        .fontDesign(.serif)
+                        .foregroundStyle(.green)
+                        .underline()
+
+                    ratingStars
+
+                    Text(ratingLabel)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
                 
                 
                 VStack(alignment: .leading, spacing: 3) {
@@ -117,8 +153,8 @@ struct MatchDetailView: View {
                 
                 Button("Save"){
                     //saving logic
-                    dM.addMatch(thisMatch)
-                    dM.updateJournal(for: thisMatch.idEvent, text: journalText)
+                    let ratingToSave = selectedRating == 0 ? thisMatch.rating : selectedRating
+                    dM.addMatch(thisMatch, notes: journalText, rating: ratingToSave)
                 }
                 .frame(width: 100, height: 40)
                 .background(Color.green)
@@ -131,6 +167,7 @@ struct MatchDetailView: View {
         }
         .onAppear {
             journalText = thisMatch.journal ?? ""
+            selectedRating = thisMatch.rating ?? 0
         }
         
     }

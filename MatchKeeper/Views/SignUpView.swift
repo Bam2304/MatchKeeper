@@ -72,7 +72,6 @@ struct SignUpView: View {
                         }
                         localErrorMessage = nil
                         authViewModel.signUp(name: name, email: email, password: password)
-                        onTapLogIn() // toggle the signupview var, or else you'll be taken back to wrong view
                     } label: {
                         HStack {
                             if authViewModel.isLoading {
